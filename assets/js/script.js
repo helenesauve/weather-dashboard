@@ -1,11 +1,39 @@
-$("#search-button").on("click", function (event) {
-  event.preventDefault();
-  var city = $("#search-input").val();
+// displays each searched city in the history section
+function renderButtons() {
+  var searchedCities = JSON.parse(localStorage.getItem("searched"));
+  console.log(searchedCities);
+  if (searchedCities === null) {
+    localStorage.setItem("searched", JSON.stringify([]));
+    return;
+  }
+  for (let i = 0; i < searchedCities.length; i++) {
+    console.log(searchedCities[i]);
+    var newCity = $("<button>");
+    newCity.text(searchedCities[i]);
+    $(".list-group").append(newCity);
+    newCity.click(function () {
+      searchWeather(this.innerHTML);
+    });
+  }
+}
+
+function addToStorage(newValue) {
+  var searchedCities = JSON.parse(localStorage.getItem("searched"));
+  if (searchedCities.includes(newValue)) {
+    return;
+  }
+  searchedCities.push(newValue);
+  localStorage.setItem("searched", JSON.stringify(searchedCities));
+}
+
+function searchWeather(value) {
+  // emptying space for new data to appear
+  $("#today").empty();
+  $("#forecast").empty();
   var queryUrl =
     "https://api.openweathermap.org/data/2.5/forecast?q=" +
-    city +
+    value +
     "&appid=b8373b3fe2c318bbddad2464aefa9025";
-
   $.ajax({
     url: queryUrl,
     method: "GET",
@@ -13,57 +41,102 @@ $("#search-button").on("click", function (event) {
     console.log(response);
     // city name
     var cityArea = response.city.name;
-    cityArea = $("<div>");
-    cityArea.text(city);
-    
+    addToStorage(cityArea);
+    // cityArea = $("<div>");
+    // cityArea.text(response.city.name);
+
     var today = $("#today");
     var forecast = $("#forecast");
-    today.append("<h2>" + city + " " + moment().format("MMMM Do YYYY") + "</h2>");
+    today.css({
+      border: "1px solid black",
+      padding: "5px",
+    });
+    today.append(
+      "<h2>" +
+        response.city.name +
+        " " +
+        "(" +
+        moment().format("MMMM Do YYYY") +
+        ")" +
+        "</h2>"
+    );
 
-    // adding wind on the page
+    // creating variables for icon, temp, wind and humidity
+    var icon = $("<img>");
+    var iconUrl =
+      "https://openweathermap.org/img/wn/" +
+      response.list[0].weather[0].icon +
+      ".png";
+    icon.attr("src", iconUrl);
+
+    var temperature = Number(response.list[0].main.temp);
+    temperature = Math.round(temperature - 273.15);
+
     var wind = response.list[0].wind.speed;
-    // wind = $("<div>");
+    var humidity = response.list[0].main.humidity;
 
-    // adding temperature on the page
-    var temperature = (response.list[0].main.temp);
-    console.log(response.list[0].main.temp)
+    today.append("<h6>" + "Temp: " + temperature + " °C" + "</h6>");
+    today.append(icon);
+    today.append("<h6>" + "Wind: " + wind + "KPH" + "</h6>");
+    today.append("<h6>" + "Humidity: " + humidity + "%" + "</h6>");
 
-
-    var humidity = (response.list[0].main.humidity);
-
-    today.append("<h3>" + "Temp: " + temperature +  " kelvin" + "</h3>")
-    today.append("<h3>" + "Wind: "+ wind + "KPH" + "</h3>")
-    today.append("<h3>" + "Humidity: " + humidity + "%" + "</h3>")
-    // today.append("<h3>" + "Humidity:" + JSON.stringify(humidity) + "</h3>")
-   
-    // creating array with the 5 next days
-    var days = [
-      (day1 = response.list[0].dt_txt),
-      (day2 = response.list[8].dt_txt),
-      (day3 = response.list[16].dt_txt),
-      (day4 = response.list[24].dt_txt),
-      (day5 = response.list[32].dt_txt),
-    //   (day6 = response.list[40].dt_txt)
-    ];
-
-    console.log(response.list[0].wind)
+    // Forecast area
 
     //for each day, display day using moment.js
     //display temp, wind, humidity
-    for (var i = i; i < days.length; i++) {
-        var wind = response.list[i].wind;
-        var temperature = response.list[i].main.temp;
 
-      
-    //   forecast.append(wind);
-    //   forecast.append(temperature);
+    // creating array with the 5 next days
+
+    var days = [
+      (day1 = response.list[7].dt_txt),
+      (day2 = response.list[15].dt_txt),
+      (day3 = response.list[23].dt_txt),
+      (day4 = response.list[31].dt_txt),
+      (day5 = response.list[39].dt_txt),
+    ];
+
+    for (var i = 0; i < days.length; i++) {
+    //   var year = days[i].substring(0, 4);
+    //   var month = days[i].substring(5, 7);
+    //   console.log(month);
+    //   console.log(year);
+      // the 5 Days Forecast text apepars
+      dayBlock = $("<div>");
+      dayBlock.css({
+        "background-color": "#00416A",
+        color: "#FFFFFF",
+        padding: "10px",
+        border: "solid white",
+      });
+
+      // var iconForecast = $("<img>");
+      // var iconForecastUrl = "https://openweathermap.org/img/wn/" + response.list[i].weather[i].icon + ".png";
+      // iconForecast.attr("src", iconForecastUrl)
+
+      var temperatureForecast = Number(response.list[i].main.temp);
+      temperatureForecast = Math.round(temperatureForecast - 273.15);
+      var windForecast = response.list[i].wind.speed;
+      var humidityForecast = response.list[i].main.humidity;
+
+      // forecast.append(days[i]);
+      dayBlock.append(days[i]);
+      // dayBlock.append(iconForecast);
+      dayBlock.append(
+        "<h6>" + "Temp: " + temperatureForecast + " °C" + "</h6>"
+      );
+      dayBlock.append("<h6>" + "Wind: " + windForecast + "KPH" + "</h6>");
+      dayBlock.append("<h6>" + "Humidity: " + humidityForecast + "%" + "</h6>");
+
+      forecast.append(dayBlock);
     }
   });
+}
+
+$("#search-button").on("click", function (event) {
+  event.preventDefault();
+  renderButtons();
+  var city = $("#search-input").val();
+  searchWeather(city);
 });
 
-// date
-// icon representation
-// temperature
-// wind speed
-
-// persistent data: buttons with cities
+renderButtons();
