@@ -1,4 +1,5 @@
 // displays each searched city in the history section
+
 function renderButtons() {
   var searchedCities = JSON.parse(localStorage.getItem("searched")) || [];
   console.log(searchedCities);
@@ -43,7 +44,7 @@ function searchWeather(value) {
     // city name
     var cityArea = response.city.name;
     addToStorage(cityArea);
-    
+
     var today = $("#today");
     var forecast = $("#forecast");
     today.css({
@@ -91,8 +92,6 @@ function searchWeather(value) {
       (day5 = response.list[39].dt_txt.split(" ")[0]),
     ];
 
-    
-
     for (var i = 0; i < days.length; i++) {
       // the 5 Days Forecast text apepars
       dayBlock = $("<div>");
@@ -104,14 +103,16 @@ function searchWeather(value) {
       });
 
       var iconForecast = $("<img>");
-      var iconForecastUrl = "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png";
-      iconForecast.attr("src", iconForecastUrl)
+      var iconForecastUrl =
+        "https://openweathermap.org/img/wn/" +
+        response.list[i].weather[0].icon +
+        ".png";
+      iconForecast.attr("src", iconForecastUrl);
 
       var temperatureForecast = Number(response.list[i].main.temp);
       temperatureForecast = Math.round(temperatureForecast - 273.15);
       var windForecast = response.list[i].wind.speed;
       var humidityForecast = response.list[i].main.humidity;
-
 
       dayBlock.append(days[i]);
       dayBlock.append(iconForecast);
