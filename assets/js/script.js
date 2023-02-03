@@ -1,6 +1,6 @@
 // displays each searched city in the history section
 function renderButtons() {
-  var searchedCities = JSON.parse(localStorage.getItem("searched"));
+  var searchedCities = JSON.parse(localStorage.getItem("searched")) || [];
   console.log(searchedCities);
   if (searchedCities === null) {
     localStorage.setItem("searched", JSON.stringify([]));
