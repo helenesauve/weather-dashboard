@@ -17,6 +17,7 @@ function renderButtons() {
   }
 }
 
+// function that adds new value to array in local storage
 function addToStorage(newValue) {
   var searchedCities = JSON.parse(localStorage.getItem("searched"));
   if (searchedCities.includes(newValue)) {
@@ -59,7 +60,7 @@ function searchWeather(value) {
         "</h2>"
     );
 
-    // creating variables for icon, temp, wind and humidity
+    // creating variables for icon, temp, wind, icon and humidity
     var icon = $("<img>");
     var iconUrl =
       "https://openweathermap.org/img/wn/" +
@@ -80,7 +81,7 @@ function searchWeather(value) {
 
     // Forecast area
 
-    // creating array with the 5 next days
+    // creating array with the next 5 days
 
     var days = [
       (day1 = response.list[7].dt_txt.split(" ")[0]),
@@ -102,18 +103,18 @@ function searchWeather(value) {
         border: "solid white",
       });
 
-      // var iconForecast = $("<img>");
-      // var iconForecastUrl = "https://openweathermap.org/img/wn/" + response.list[i].weather[i].icon + ".png";
-      // iconForecast.attr("src", iconForecastUrl)
+      var iconForecast = $("<img>");
+      var iconForecastUrl = "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png";
+      iconForecast.attr("src", iconForecastUrl)
 
       var temperatureForecast = Number(response.list[i].main.temp);
       temperatureForecast = Math.round(temperatureForecast - 273.15);
       var windForecast = response.list[i].wind.speed;
       var humidityForecast = response.list[i].main.humidity;
 
-      // forecast.append(days[i]);
+
       dayBlock.append(days[i]);
-      // dayBlock.append(iconForecast);
+      dayBlock.append(iconForecast);
       dayBlock.append(
         "<h6>" + "Temp: " + temperatureForecast + " °C" + "</h6>"
       );
@@ -125,6 +126,7 @@ function searchWeather(value) {
   });
 }
 
+// when the search button is clicked, function renderButtons runs
 $("#search-button").on("click", function (event) {
   event.preventDefault();
   renderButtons();

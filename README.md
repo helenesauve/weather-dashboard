@@ -8,23 +8,17 @@ To build this programme, I have used the [5 Day Weather Forecast](https://openwe
 
 Here is how the programme works:
 
-  * When a user searches for a city they are presented with current and future conditions for that city and that city is added to the search history
-  * When a user views the current weather conditions for that city they are presented with:
+  * When a user searches the current weather conditions for a city, they are presented with the below for the current day and next 5 days:
     * The city name
     * The date
     * An icon representation of weather conditions
     * The temperature
     * The humidity
     * The wind speed
-  * When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
-    * The date
-    * An icon representation of weather conditions
-    * The temperature
-    * The humidity
   * When a user click on a city in the search history they are again presented with current and future conditions for that city
 
 
-The following image shows the web application's appearance and functionality and the live programme can be found [here](https://link-url-here.org)
+The following image shows the web application's appearance and functionality and the live programme can be found [here](https://helenesauve.github.io/weather-dashboard/)
 
-![TEXT GOES HERE.](./assets/TEXTGOESHEREo.png)
+![TEXT GOES HERE.](./assets/images/screenshot.png)
 
