@@ -42,9 +42,7 @@ function searchWeather(value) {
     // city name
     var cityArea = response.city.name;
     addToStorage(cityArea);
-    // cityArea = $("<div>");
-    // cityArea.text(response.city.name);
-
+    
     var today = $("#today");
     var forecast = $("#forecast");
     today.css({
@@ -82,24 +80,19 @@ function searchWeather(value) {
 
     // Forecast area
 
-    //for each day, display day using moment.js
-    //display temp, wind, humidity
-
     // creating array with the 5 next days
 
     var days = [
-      (day1 = response.list[7].dt_txt),
-      (day2 = response.list[15].dt_txt),
-      (day3 = response.list[23].dt_txt),
-      (day4 = response.list[31].dt_txt),
-      (day5 = response.list[39].dt_txt),
+      (day1 = response.list[7].dt_txt.split(" ")[0]),
+      (day2 = response.list[15].dt_txt.split(" ")[0]),
+      (day3 = response.list[23].dt_txt.split(" ")[0]),
+      (day4 = response.list[31].dt_txt.split(" ")[0]),
+      (day5 = response.list[39].dt_txt.split(" ")[0]),
     ];
 
+    
+
     for (var i = 0; i < days.length; i++) {
-    //   var year = days[i].substring(0, 4);
-    //   var month = days[i].substring(5, 7);
-    //   console.log(month);
-    //   console.log(year);
       // the 5 Days Forecast text apepars
       dayBlock = $("<div>");
       dayBlock.css({
