@@ -20,7 +20,7 @@ function renderButtons() {
 
 // function that adds new value to array in local storage
 function addToStorage(newValue) {
-  var searchedCities = JSON.parse(localStorage.getItem("searched"));
+  var searchedCities = JSON.parse(localStorage.getItem("searched")) || [];
   if (searchedCities.includes(newValue)) {
     return;
   }
